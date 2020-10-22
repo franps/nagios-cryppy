@@ -15,9 +15,9 @@ def get_expiration_from_file(crlName):
 
     nextUpdate = subprocess.check_output(["/usr/bin/openssl", "crl", "-inform", format, "-noout", "-nextupdate", "-in", crlName], stderr=subprocess.STDOUT).decode('ascii')
     nextUpdate = nextUpdate.split("=")[1][:-1] # Data before splitting: 'nextUpdate=Oct 28 04:57:01 2020 GMT\n'
-    exp = datetime.strptime(nextUpdate,"%b %d %H:%M:%S %Y %Z")
+    exp_date = datetime.strptime(nextUpdate,"%b %d %H:%M:%S %Y %Z")
 
-    return exp
+    return is_expired(exp_date)
 
 def is_expired(exp):
     days_to_exp = (exp-today).days
