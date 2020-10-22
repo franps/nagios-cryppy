@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# or usr/bin/env python depending on the version you have
+
 from datetime import datetime
 from OpenSSL import crypto
 import subprocess
@@ -35,6 +38,12 @@ def is_expired(exp):
         exitcode = 0
 
     sys.exit(exitcode)
+
+if len(sys.argv)==2:
+    get_expiration_from_file(sys.argv[1])
+else: 
+    print("UNKNOWN Plugin was not called correctly")
+    sys.exit(3)
 
 #exp = get_expiration_from_file('testcrl.crl')
 #print("Crl expiraton: ", exp)
