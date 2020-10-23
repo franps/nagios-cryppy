@@ -2,15 +2,23 @@
 # or usr/bin/env python depending on the version you have
 
 from datetime import datetime
-from OpenSSL import crypto as c
+import subprocess
 import sys
 
 today = datetime.now()
 
 def get_expiration_from_file(certName):
-	with open(certName) as f:
-		cert = c.load_certificate(c.FILETYPE_PEM, f.read())
-		exp_date = datetime.strptime(cert.get_notAfter().decode('ascii'),"%Y%m%d%H%M%SZ")
+	with open(certName) as c:
+		try:
+			format = "PEM"
+			c.read()
+		except UnicodeDecodeError as e: # trying to read DER format will throw this error, not fancy but effective
+			format = "DER"
+
+	nextUpdate = subprocess.check_output(["/usr/bin/openssl", "x509", "-in", certName, "-inform", format,"-enddate","-noout" ], stderr=subprocess.STDOUT).decode('ascii')
+	nextUpdate = nextUpdate.split("=")[1][:-1] # Data before splitting: 'nextUpdate=Oct 28 04:57:01 2020 GMT\n'
+	exp_date = datetime.strptime(nextUpdate,"%b %d %H:%M:%S %Y %Z")
+	
 	return is_expired(exp_date)
 
 def is_expired(exp):
@@ -33,7 +41,7 @@ def is_expired(exp):
 if len(sys.argv)==2:
     get_expiration_from_file(sys.argv[1])
 else: 
-    print("UNKNOWN Plugin was not called correctly")
+    print("UNKNOWN Plugin was not called correctly") # Correct calling is ./check_cert.py path/to/cert.cer
     sys.exit(3)
 
 #exp = get_expiration_from_file('testcert.cer')
