@@ -1,2 +1,4 @@
-*.pem
+*.cer
 *.crl
+*.der
+*.pem
