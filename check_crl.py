@@ -2,7 +2,6 @@
 # or usr/bin/env python depending on the version you have
 
 from datetime import datetime
-from OpenSSL import crypto
 import subprocess
 import sys
 
