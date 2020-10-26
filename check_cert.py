@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
-# or usr/bin/env python depending on the version you have
+#!/usr/bin/env python
+# or !/usr/bin/env python3 depending on the version you have
 
 from datetime import datetime
 import subprocess
@@ -18,22 +18,22 @@ def get_expiration_from_file(certName):
 	nextUpdate = subprocess.check_output(["/usr/bin/openssl", "x509", "-in", certName, "-inform", format,"-enddate","-noout" ], stderr=subprocess.STDOUT).decode('ascii')
 	nextUpdate = nextUpdate.split("=")[1][:-1] # Data before splitting: 'nextUpdate=Oct 28 04:57:01 2020 GMT\n'
 	exp_date = datetime.strptime(nextUpdate,"%b %d %H:%M:%S %Y %Z")
-	
+
 	return is_expired(exp_date)
 
 def is_expired(exp):
     days_to_exp = (exp-today).days
     if days_to_exp <= 15 :
-        print ("CRITICAL Cert about to expire or already expired, run for your lives! : ",days_to_exp, "days to expiration")
+        print ("CRITICAL Cert about to expire or already expired, run for your lives! : {0} days to expiration".format(days_to_exp))
         exitcode = 2
     elif days_to_exp < 30 :
-        print ("CRITICAL Cert expiration in less than 30 days: ",days_to_exp, "days to expiration")
+        print ("CRITICAL Cert expiration in less than 30 days: {0} days to expiration".format(days_to_exp))
         exitcode = 2 
     elif days_to_exp < 60: 
-        print ("WARNING Cert expiration in less than 60 days: ",days_to_exp, "days to expiration")
+        print ("WARNING Cert expiration in less than 60 days: {0} days to expiration".format(days_to_exp))
         exitcode = 1 
     else:
-        print ("OK Cert expires in :",days_to_exp," days to expiration")
+        print ("OK Cert expires in : {0} days to expiration".format(days_to_exp))
         exitcode = 0
 
     sys.exit(exitcode)
