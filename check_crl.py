@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
-# or usr/bin/env python depending on the version you have
+#!/usr/bin/env python
+# or !/usr/bin/env python3 depending on the version you have
 
 from datetime import datetime
 import subprocess
@@ -24,16 +24,16 @@ def get_expiration_from_file(crlName):
 def is_expired(exp):
     days_to_exp = (exp-today).days
     if days_to_exp <= 3 :
-        print ("CRITICAL CRL about to expire or already expired, run for your lives! : ",days_to_exp, "days to expiration")
+        print ("CRITICAL CRL about to expire or already expired, run for your lives! : {0} days to expiration".format(days_to_exp))
         exitcode = 2
     elif days_to_exp < 15 :
-        print ("CRITICAL CRL expiration in less than 15 days: ",days_to_exp, "days to expiration")
+        print ("CRITICAL CRL expiration in less than 15 days: {0} days to expiration".format(days_to_exp))
         exitcode = 2 
     elif days_to_exp < 30: 
-        print ("WARNING CRL expiration in less than 30 days: ",days_to_exp, "days to expiration")
+        print ("WARNING CRL expiration in less than 30 days: {0} days to expiration".format(days_to_exp))
         exitcode = 1 
     else:
-        print ("OK CRL expires in :",days_to_exp," days to expiration")
+        print ("OK CRL expires in : {0} days to expiration".format(days_to_exp))
         exitcode = 0
 
     sys.exit(exitcode)
