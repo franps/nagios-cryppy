@@ -17,14 +17,16 @@ def get_expiration_from_file(certName):
             c.read()
         except UnicodeDecodeError as e:  # trying to read DER format will throw this error, not fancy but effective
             format = "DER"
-
-    nextUpdate = subprocess.check_output(["/usr/bin/openssl", "x509", "-in", certName,
-                                          "-inform", format, "-enddate", "-noout"], stderr=subprocess.STDOUT).decode('ascii')
-    # Data before splitting: 'nextUpdate=Oct 28 04:57:01 2020 GMT\n'
-    nextUpdate = nextUpdate.split("=")[1][:-1]
-    exp_date = datetime.strptime(nextUpdate, "%b %d %H:%M:%S %Y %Z")
-
-    return is_expired(exp_date)
+        try:
+            nextUpdate = subprocess.check_output(["/usr/bin/openssl", "x509", "-in", certName,
+                                                  "-inform", format, "-enddate", "-noout"], stderr=subprocess.STDOUT).decode('ascii')
+            # Data before splitting: 'nextUpdate=Oct 28 04:57:01 2020 GMT\n'
+            nextUpdate = nextUpdate.split("=")[1][:-1]
+            exp_date = datetime.strptime(nextUpdate, "%b %d %H:%M:%S %Y %Z")
+            return is_expired(exp_date)
+        except subprocess.CalledProcessError as e:
+            print("Certificate file with error")
+            return [0]
 
 
 def is_expired(exp):
