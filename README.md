@@ -17,3 +17,8 @@ check_crl is a nagios friendly script to check the expiration date of crls and a
 It supports both DER and PEM format, you can try it on a terminal running 
 
 `./check_crl.py path/to/crl.crl`
+
+## check_ssl
+check_ssl is a nagios friendly script to check the expiration date of ssl certs.
+It supports PEM format, you can try it on a terminal running 
+`./check_ssl.py www.example.com`
