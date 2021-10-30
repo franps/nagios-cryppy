@@ -8,11 +8,11 @@ import sys
 today = datetime.now()
 
 
-def get_expiration_from_file(jksName,passphrase):
-    with open(jksName) as c:
+def get_expiration_from_file(ksName,passphrase):
+    with open(ksName) as c:
         try:
             # Command that is run here: keytool -list -v -keystore example.jks -storepass 12345678
-            nextUpdate = subprocess.check_output(["/usr/bin/keytool", "-list", "-v","-keystore", jksName,"-storepass",passphrase], stderr=subprocess.STDOUT).decode('ascii')
+            nextUpdate = subprocess.check_output(["/usr/bin/keytool", "-list", "-v","-keystore", ksName,"-storepass",passphrase], stderr=subprocess.STDOUT).decode('ascii')
             nextUpdate = nextUpdate.split("until: ")
             nextUpdate = nextUpdate[1:]
             

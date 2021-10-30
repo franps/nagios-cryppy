@@ -3,3 +3,5 @@
 *.der
 *.pem
 *.jks
+*.p12
+*.pfx
