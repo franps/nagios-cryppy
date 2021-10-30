@@ -2,3 +2,4 @@
 *.crl
 *.der
 *.pem
+*.jks

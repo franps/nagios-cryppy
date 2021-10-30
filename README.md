@@ -23,3 +23,9 @@ check_ssl is a nagios friendly script to check the expiration date of ssl certs.
 It supports PEM format, you can try it on a terminal running 
 
 `./check_ssl.py www.example.com`
+
+## check_jks
+check_jks is a nagios friendly script to check the expiration date of certs inside a JKS.
+It supports JKS with one or more certs inside, you can try it on a terminal running 
+
+`./check_jks.py example.jks passphrase`
